@@ -1,13 +1,116 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    font-family: Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #858796;
+    text-align: left;
+    background-color: #fff;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+.navbar-brand, .ig{
+	font-size: 25px;
+	background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
+
+.navbar-brand{
+	font-family: 'Righteous', cursive;
+}
+
+.mtop	{
+	margin-top: 110px;
+}
+
+.bg-white {
+	background-color: rgba(255,255,255, 0.95) !important;
+}
+p, li{
+	font-size: 15px;
+}
+
+.list-group-item {
+	border: none;
+	padding: 0.45rem 0;
+	font-size: 14px;
+}
+
+.copyright {
+	height: 3px;
+}
+
+.copy {
+	line-height: 30px;
+}
+
+a {
+	color: #858796;
+	text-decoration: none;
+	background-color: transparent;
+}
+
+a:hover {
+	color: #858796;
+	text-decoration: underline;
+}
+
+h4, h5, h6 {
+	font-weight: 500;
+}
+
+.load{transform:translate(-50%, -50%);
+	/*change these sizes to fit into your project*/
+	width:50px;
+	height:50px;
+}
+.load hr{border:0;margin:0;width:40%;height:40%;position:absolute;border-radius:50%;animation:spin 2s ease infinite}
+
+.load :first-child{background:#19A68C;animation-delay:-1.5s}
+.load :nth-child(2){background:#F63D3A;animation-delay:-1s}
+.load :nth-child(3){background:#FDA543;animation-delay:-0.5s}
+.load :last-child{background:#193B48}
+
+@keyframes spin{
+	0%,100%{transform:translate(0)}
+	25%{transform:translate(160%)}
+	50%{transform:translate(160%, 160%)}
+	75%{transform:translate(0, 160%)}
+}
+
+.video-custom{
+	height: 400px;
+}
+
+.mbmin {
+	margin-left: 15px;
+	margin-bottom: -30px;
+}
+
+.nav-link {
+	cursor: pointer;
+}
+
+.nav-link:last-child::after {
+	content: '';
+}
+
+.border-left-success {
+  border-left: 0.25rem solid #1cc88a !important;
+}
+
+@media only screen and (min-width: 768px) {
+	.ml-6 {
+		margin-left: 5rem;
+	}
+	.info {
+		margin-left: 1rem;
+	}
+	.navbar-nav a::after {
+		content : '|';
+		margin: 0 0 0 10px;
+	}
+}
+
+
