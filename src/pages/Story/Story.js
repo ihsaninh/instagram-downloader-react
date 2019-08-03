@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import axios from "axios";
+import Input from "../../components/Input";
 import Footer from "../../components/Footer";
 import Description from "../../components/Description";
 
@@ -59,32 +60,7 @@ class Story extends Component {
     return (
       <Fragment>
         <div className="container mtop content">
-          <div className="row justify-content-center">
-            <div className="col-lg-6">
-              <form onSubmit={this.handleSubmit}>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    className="form-control bg-light border-0 small"
-                    placeholder="Enter Instagram Username..."
-                    aria-label="Search"
-                    autoComplete="off"
-                    value={value}
-                    onChange={this.handleChange}
-                  />
-                  <div className="input-group-append">
-                    <button
-                      className="btn btn-success"
-                      type="submit"
-                      value="Submit"
-                    >
-                      <i className="fas fa-search fa-sm" />
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
+          <Input onSubmit={this.handleSubmit} placeholder="Enter Instagram Username.." value={value} onChange={this.handleChange} />
           {isError ? (
             <div className="row mt-5">
               <div className="col">
