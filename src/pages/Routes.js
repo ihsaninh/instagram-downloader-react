@@ -5,9 +5,9 @@ import {
   NavLink,
   Link
 } from "react-router-dom";
-import Home from "./Home/Home";
-import Video from "./Video/Video";
-import Story from "./Story/Story";
+import Home from "./Home";
+import Video from "./Video";
+import Story from "./Story";
 
 const Routes = props => {
   return (
