@@ -11,7 +11,7 @@ class Home extends Component {
     this.state = {
       photos: [],
       photo: "",
-      value: "",
+      id: "",
       isLoading: false,
       isError: false,
       isSingle: false,
@@ -25,11 +25,11 @@ class Home extends Component {
   }
 
   handleChange(event) {
-    this.setState({ value: event.target.value });
+    this.setState({ id: event.target.value });
   }
 
   getPhotosData = () => {
-    const id = this.state.value;
+    const id = this.state.id;
     API.getIgPhotos(id)
     .then(res => {
       if ("pict_url" in res) {
@@ -46,25 +46,28 @@ class Home extends Component {
           });
         }
     })
+    .catch(() => {
+      this.setState({isError: true})
+    })
   }
 
   handleSubmit(event) {
-    this.setState({ id: this.state.value, isLoading: true })
+    this.setState({ id: this.state.id, isLoading: true })
     this.getPhotosData();
     event.preventDefault();
   }
 
   render() {
-    const { photo, photos, value, isError, isLoading, isSingle } = this.state;
+    const { photo, photos, id, isError, isLoading, isSingle } = this.state;
     return (
       <Fragment>
         <div className="container mtop content">
-          <Input onSubmit={this.handleSubmit} placeholder="Enter Instagram Post URL..." value={value} onChange={this.handleChange} />
+          <Input onSubmit={this.handleSubmit} placeholder="Enter Instagram Post URL..." id={id} onChange={this.handleChange} />
           {isError ? (
             <div className="row mt-5">
               <div className="col">
                 <h5 className="text-center text-danger pb-3">
-                  Hasil tidak ditemukan
+                  Result Not Found
                 </h5>
               </div>
             </div>

@@ -11,7 +11,7 @@ class Story extends Component {
     this.state = {
       videos: [],
       photos: [],
-      value: "",
+      id: "",
       isLoading: false,
       isError: false,
     };
@@ -24,12 +24,12 @@ class Story extends Component {
   }
 
   handleChange(event) {
-    this.setState({ value: event.target.value });
+    this.setState({ id: event.target.value });
   }
 
   getStoriesData = () => {
-    const id = this.state.value;
-    API.getIgPhotos(id)
+    const id = this.state.id;
+    API.getIgStories(id)
     .then(res => {
         this.setState({
           photos: res.pict_url,
@@ -40,17 +40,17 @@ class Story extends Component {
   }
 
   handleSubmit(event) {
-    this.setState({ id: this.state.value, isLoading: true });
+    this.setState({ id: this.state.id, isLoading: true });
     this.getStoriesData();
     event.preventDefault();
   }
 
   render() {
-    const { videos, photos, value, isError, isLoading } = this.state;
+    const { videos, photos, id, isError, isLoading } = this.state;
     return (
       <Fragment>
         <div className="container mtop content">
-          <Input onSubmit={this.handleSubmit} placeholder="Enter Instagram Username.." value={value} onChange={this.handleChange} />
+          <Input onSubmit={this.handleSubmit} placeholder="Enter Instagram Username.." id={id} onChange={this.handleChange} />
           {isError ? (
             <div className="row mt-5">
               <div className="col">
@@ -69,7 +69,7 @@ class Story extends Component {
               </div>
             </div>
           ) : (
-            <div>
+            <Fragment>
               <div className="row mt-5">
                 {photos.map((photo, i) => (
                   <div className="col-md-4 mb-3" key={i}>
@@ -90,7 +90,7 @@ class Story extends Component {
                     <div className="card">
                       <video
                         src={video}
-                        class="card-img-top video-custom"
+                        className="card-img-top video-custom"
                         controls
                       />
                     </div>
@@ -102,7 +102,7 @@ class Story extends Component {
                   </div>
                 ))}
               </div>
-            </div>
+            </Fragment>
           )}
           <Description
             title="Stories"

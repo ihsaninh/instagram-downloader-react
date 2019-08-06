@@ -11,7 +11,7 @@ class Video extends Component {
     this.state = {
       videos: [],
       video: "",
-      value: "",
+      id: "",
       isLoading: false,
       isError: false,
       isSingle: false,
@@ -25,11 +25,11 @@ class Video extends Component {
   }
 
   handleChange(event) {
-    this.setState({ value: event.target.value });
+    this.setState({ id: event.target.value });
   }
 
   getVideosData = () => {
-    const id = this.state.value;
+    const id = this.state.id;
     API.getIgVideos(id)
     .then(res => {
       if ("video_url" in res) {
@@ -49,17 +49,17 @@ class Video extends Component {
   }
 
   handleSubmit(event) {
-    this.setState({ id: this.state.value, isLoading: true });
+    this.setState({ id: this.state.id, isLoading: true });
     this.getVideosData();
     event.preventDefault();
   }
 
   render() {
-    const { video, videos, value, isError, isLoading, isSingle } = this.state;
+    const { video, videos, id, isError, isLoading, isSingle } = this.state;
     return (
       <Fragment>
         <div className="container mtop content">
-          <Input onSubmit={this.handleSubmit} placeholder="Enter Instagram Post URL..." value={value} onChange={this.handleChange} />
+          <Input onSubmit={this.handleSubmit} placeholder="Enter Instagram Post URL..." id={id} onChange={this.handleChange} />
           {isError ? (
             <div className="row mt-5">
               <div className="col">
@@ -84,7 +84,7 @@ class Video extends Component {
                   <div className="card">
                     <video
                       src={video}
-                      class="card-img-top video-custom"
+                      className="card-img-top video-custom"
                       controls
                     />
                   </div>
@@ -100,7 +100,7 @@ class Video extends Component {
                     <div className="card">
                       <video
                         src={video}
-                        class="card-img-top video-custom"
+                        className="card-img-top video-custom"
                         controls
                       />
                     </div>

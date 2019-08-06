@@ -13,7 +13,7 @@ const Input = (props) => {
 	                    placeholder={props.placeholder}
 	                    aria-label="Search"
 	                    autoComplete="off"
-	                    value={props.value}
+	                    value={props.id}
 	                    onChange={props.onChange}
 	                  />
 	                  <div className="input-group-append">
