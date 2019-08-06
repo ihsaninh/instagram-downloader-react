@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import axios from "axios";
+import API from '../../services';
 import Input from "../../components/Input";
 import Footer from "../../components/Footer";
 import Description from "../../components/Description";
@@ -15,7 +15,6 @@ class Video extends Component {
       isLoading: false,
       isError: false,
       isSingle: false,
-      apikey: "Z6OIZrudRcWtEuScCI9Nc38qx"
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -29,34 +28,29 @@ class Video extends Component {
     this.setState({ value: event.target.value });
   }
 
-  handleSubmit(event) {
-    this.setState({ isLoading: true });
-    axios
-      .get("https://rest.farzain.com/api/ig_post.php", {
-        params: {
-          apikey: this.state.apikey,
-          id: this.state.value
-        }
-      })
-      .then(res => {
-        if ("video_url" in res.data) {
+  getVideosData = () => {
+    const id = this.state.value;
+    API.getIgVideos(id)
+    .then(res => {
+      if ("video_url" in res) {
           this.setState({
             isLoading: false,
-            videos: res.data.video_url,
+            photos: res.video_url,
             isSingle: false
           });
         } else {
           this.setState({
             isLoading: false,
-            video: res.data.first_video,
+            photo: res.first_video,
             isSingle: true
           });
         }
-      })
-      .catch(err => {
-        this.setState({ isError: true });
-      });
+    })
+  }
 
+  handleSubmit(event) {
+    this.setState({ id: this.state.value, isLoading: true });
+    this.getVideosData();
     event.preventDefault();
   }
 

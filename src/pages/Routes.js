@@ -12,7 +12,7 @@ import Story from "./Story";
 const Routes = props => {
   return (
     <Router>
-      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow fixed-top">
+      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
         <div className="container">
           <Link className="navbar-brand" to="/">
             <i className="fab fa-instagram ig" />InstaGan

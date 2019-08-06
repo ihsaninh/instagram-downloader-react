@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import axios from "axios";
+import API from '../../services';
 import Input from "../../components/Input";
 import Footer from "../../components/Footer";
 import Description from "../../components/Description";
@@ -15,7 +15,6 @@ class Home extends Component {
       isLoading: false,
       isError: false,
       isSingle: false,
-      apikey: "Z6OIZrudRcWtEuScCI9Nc38qx"
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -29,34 +28,29 @@ class Home extends Component {
     this.setState({ value: event.target.value });
   }
 
-  handleSubmit(event) {
-    this.setState({ isLoading: true });
-    axios
-      .get("https://rest.farzain.com/api/ig_post.php", {
-        params: {
-          apikey: this.state.apikey,
-          id: this.state.value
-        }
-      })
-      .then(res => {
-        if ("pict_url" in res.data) {
+  getPhotosData = () => {
+    const id = this.state.value;
+    API.getIgPhotos(id)
+    .then(res => {
+      if ("pict_url" in res) {
           this.setState({
             isLoading: false,
-            photos: res.data.pict_url,
+            photos: res.pict_url,
             isSingle: false
           });
         } else {
           this.setState({
             isLoading: false,
-            photo: res.data.first_pict,
+            photo: res.first_pict,
             isSingle: true
           });
         }
-      })
-      .catch(err => {
-        this.setState({ isError: true });
-      });
+    })
+  }
 
+  handleSubmit(event) {
+    this.setState({ id: this.state.value, isLoading: true })
+    this.getPhotosData();
     event.preventDefault();
   }
 

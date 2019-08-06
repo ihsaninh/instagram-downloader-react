@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import axios from "axios";
+import API from '../../services';
 import Input from "../../components/Input";
 import Footer from "../../components/Footer";
 import Description from "../../components/Description";
@@ -14,7 +14,6 @@ class Story extends Component {
       value: "",
       isLoading: false,
       isError: false,
-      apikey: "Z6OIZrudRcWtEuScCI9Nc38qx"
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,30 +27,21 @@ class Story extends Component {
     this.setState({ value: event.target.value });
   }
 
-  handleSubmit(event) {
-    this.setState({ isLoading: true });
-    axios
-      .get("https://rest.farzain.com/api/ig_story.php", {
-        params: {
-          apikey: this.state.apikey,
-          id: this.state.value
-        }
-      })
-      .then(res => {
-        const videos = res.data.video_url;
-        Object.keys(videos).forEach(
-          key => videos[key] === null && delete videos[key]
-        );
+  getStoriesData = () => {
+    const id = this.state.value;
+    API.getIgPhotos(id)
+    .then(res => {
         this.setState({
-          photos: res.data.pict_url,
-          videos: videos,
+          photos: res.pict_url,
+          videos: res.video_url,
           isLoading: false
         });
-      })
-      .catch(err => {
-        this.setState({ isError: true });
-      });
+    })
+  }
 
+  handleSubmit(event) {
+    this.setState({ id: this.state.value, isLoading: true });
+    this.getStoriesData();
     event.preventDefault();
   }
 
