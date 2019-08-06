@@ -37,6 +37,9 @@ class Story extends Component {
           isLoading: false
         });
     })
+    .catch(() => {
+      this.setState({isError: true})
+    })
   }
 
   handleSubmit(event) {
