@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment } from 'react';
 import API from '../../services';
-import Input from "../../components/Input";
-import Footer from "../../components/Footer";
-import Description from "../../components/Description";
+import Input from '../../components/Input';
+import Footer from '../../components/Footer';
+import Description from '../../components/Description';
 
 class Home extends Component {
   constructor(props) {
@@ -10,29 +10,27 @@ class Home extends Component {
 
     this.state = {
       photos: [],
-      photo: "",
-      id: "",
+      photo: '',
+      id: '',
       isLoading: false,
       isError: false,
-      isSingle: false,
+      isSingle: false
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
-    document.title = "Instagram Photos Downloader";
+    document.title = 'Instagram Photos Downloader';
   }
 
-  handleChange(event) {
-    this.setState({ id: event.target.value });
-  }
+  handleChange = e => {
+    this.setState({ id: e.target.value });
+  };
 
   getPhotosData = () => {
-    const id = this.state.id;
+    const { id } = this.state;
     API.getIgPhotos(id)
-    .then(res => {
-      if ("pict_url" in res) {
+      .then(res => {
+        if ('pict_url' in res) {
           this.setState({
             isLoading: false,
             photos: res.pict_url,
@@ -45,74 +43,122 @@ class Home extends Component {
             isSingle: true
           });
         }
-    })
-    .catch(() => {
-      this.setState({isError: true})
-    })
-  }
+      })
+      .catch(() => {
+        this.setState({ isError: true });
+      });
+  };
 
-  handleSubmit(event) {
-    this.setState({ id: this.state.id, isLoading: true })
+  handleSubmit = e => {
+    e.preventDefault();
+    this.setState({ id: this.state.id, isLoading: true });
     this.getPhotosData();
-    event.preventDefault();
-  }
+  };
+
+  renderSearchBar = () => {
+    const { id } = this.state;
+    return (
+      <Input
+        onSubmit={this.handleSubmit}
+        placeholder="Enter Instagram Post URL..."
+        id={id}
+        onChange={this.handleChange}
+      />
+    );
+  };
+
+  renderContent = () => {
+    const { isError, isLoading } = this.state;
+
+    if (isError) {
+      return this.renderError();
+    } else if (isLoading) {
+      return this.renderLoading();
+    } else {
+      return this.renderAllResult();
+    }
+  };
+
+  renderAllResult = () => {
+    const { isSingle } = this.state;
+    return (
+      <div className="row mt-5">
+        {isSingle ? this.renderSingleResult() : this.renderResult()}
+      </div>
+    );
+  };
+
+  renderDescription = () => {
+    return (
+      <Description
+        title="Photos"
+        thirdStep="Copy the URL of that Image or Video or copy the URL of profile."
+      />
+    );
+  };
+
+  renderLoading = () => {
+    return (
+      <div
+        className="row mt-5"
+        style={{ justifyContent: 'center', alignItems: 'center' }}
+      >
+        <div className="spinner-grow text-primary" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>
+    );
+  };
+
+  renderError = () => {
+    return (
+      <div className="row mt-5">
+        <div className="col">
+          <h5 className="text-center text-danger pb-3">Result Not Found</h5>
+        </div>
+      </div>
+    );
+  };
+
+  renderSingleResult = () => {
+    const { photo } = this.state;
+    return (
+      <div className="col-md-4 mb-3">
+        <div className="card">
+          <img src={photo} className="card-img" alt={photo} />
+        </div>
+        <div className="card-body text-center">
+          <a href={photo} className="btn btn-success" download>
+            <i className="fas fa-download" /> Download
+          </a>
+        </div>
+      </div>
+    );
+  };
+
+  renderAllResult = () => {
+    const { photos } = this.state;
+    return photos.map((photo, i) => (
+      <div className="col-md-4 mb-3" key={i}>
+        <div className="card">
+          <img src={photo} className="card-img" alt={photo} />
+        </div>
+        <div className="card-body text-center">
+          <a href={photo} className="btn btn-success" download>
+            <i className="fas fa-download" /> Download
+          </a>
+        </div>
+      </div>
+    ));
+  };
 
   render() {
-    const { photo, photos, id, isError, isLoading, isSingle } = this.state;
     return (
       <Fragment>
         <div className="container mtop content">
-          <Input onSubmit={this.handleSubmit} placeholder="Enter Instagram Post URL..." id={id} onChange={this.handleChange} />
-          {isError ? (
-            <div className="row mt-5">
-              <div className="col">
-                <h5 className="text-center text-danger pb-3">
-                  Result Not Found
-                </h5>
-              </div>
-            </div>
-          ) : isLoading ? (
-            <div
-              className="row mt-5"
-              style={{ justifyContent: "center", alignItems: "center" }}
-            >
-              <div className="spinner-grow text-primary" role="status">
-                <span className="sr-only">Loading...</span>
-              </div>
-            </div>
-          ) : (
-            <div className="row mt-5">
-              {isSingle ? (
-                <div className="col-md-4 mb-3">
-                  <div className="card">
-                    <img src={photo} className="card-img" alt={photo} />
-                  </div>
-                  <div className="card-body text-center">
-                    <a href={photo} className="btn btn-success" download>
-                      <i className="fas fa-download" /> Download
-                    </a>
-                  </div>
-                </div>
-              ) : (
-                photos.map((photo, i) => (
-                  <div className="col-md-4 mb-3" key={i}>
-                    <div className="card">
-                      <img src={photo} className="card-img" alt={photo} />
-                    </div>
-                    <div className="card-body text-center">
-                      <a href={photo} className="btn btn-success" download>
-                        <i className="fas fa-download" /> Download
-                      </a>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          )}
-          <Description
-            title="Photos"
-            thirdStep="Copy the URL of that Image or Video or copy the URL of profile."
-          />
+          {this.renderSearchBar()}
+          {this.renderContent()}
+          {this.renderDescription()}
         </div>
         <Footer />
       </Fragment>
