@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 
 const Input = props => {
-	const { onSubmit, placeholder, id, onChange } = props;
+  const { onSubmit, placeholder, id, onChange } = props;
   return (
     <Fragment>
       <div className="row justify-content-center">
