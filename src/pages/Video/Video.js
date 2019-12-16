@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from "react";
-import API from '../../services';
-import Input from "../../components/Input";
-import Footer from "../../components/Footer";
-import Description from "../../components/Description";
+import React, { Component, Fragment } from 'react';
+import { getIgVideos } from '../../services';
+import Input from '../../components/Input';
+import Footer from '../../components/Footer';
+import Description from '../../components/Description';
 
 class Video extends Component {
   constructor(props) {
@@ -10,18 +10,18 @@ class Video extends Component {
 
     this.state = {
       videos: [],
-      video: "",
-      id: "",
+      video: '',
+      id: '',
       isLoading: false,
       isError: false,
-      isSingle: false,
+      isSingle: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
-    document.title = "Instagram Videos Downloader";
+    document.title = 'Instagram Videos Downloader';
   }
 
   handleChange(event) {
@@ -30,23 +30,22 @@ class Video extends Component {
 
   getVideosData = () => {
     const id = this.state.id;
-    API.getIgVideos(id)
-    .then(res => {
-      if ("video_url" in res) {
-          this.setState({
-            isLoading: false,
-            photos: res.video_url,
-            isSingle: false
-          });
-        } else {
-          this.setState({
-            isLoading: false,
-            photo: res.first_video,
-            isSingle: true
-          });
-        }
-    })
-  }
+    getIgVideos(id).then(res => {
+      if ('video_url' in res) {
+        this.setState({
+          isLoading: false,
+          photos: res.video_url,
+          isSingle: false
+        });
+      } else {
+        this.setState({
+          isLoading: false,
+          photo: res.first_video,
+          isSingle: true
+        });
+      }
+    });
+  };
 
   handleSubmit(event) {
     this.setState({ id: this.state.id, isLoading: true });
@@ -59,7 +58,12 @@ class Video extends Component {
     return (
       <Fragment>
         <div className="container mtop content">
-          <Input onSubmit={this.handleSubmit} placeholder="Enter Instagram Post URL..." id={id} onChange={this.handleChange} />
+          <Input
+            onSubmit={this.handleSubmit}
+            placeholder="Enter Instagram Post URL..."
+            id={id}
+            onChange={this.handleChange}
+          />
           {isError ? (
             <div className="row mt-5">
               <div className="col">
@@ -71,7 +75,7 @@ class Video extends Component {
           ) : isLoading ? (
             <div
               className="row mt-5"
-              style={{ justifyContent: "center", alignItems: "center" }}
+              style={{ justifyContent: 'center', alignItems: 'center' }}
             >
               <div className="spinner-grow text-primary" role="status">
                 <span className="sr-only">Loading...</span>

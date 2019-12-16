@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from "react";
-import API from '../../services';
-import Input from "../../components/Input";
-import Footer from "../../components/Footer";
-import Description from "../../components/Description";
+import React, { Component, Fragment } from 'react';
+import { getIgStories } from '../../services';
+import Input from '../../components/Input';
+import Footer from '../../components/Footer';
+import Description from '../../components/Description';
 
 class Story extends Component {
   constructor(props) {
@@ -11,16 +11,16 @@ class Story extends Component {
     this.state = {
       videos: [],
       photos: [],
-      id: "",
+      id: '',
       isLoading: false,
-      isError: false,
+      isError: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
-    document.title = "Instagram Stories Downloader";
+    document.title = 'Instagram Stories Downloader';
   }
 
   handleChange(event) {
@@ -29,18 +29,18 @@ class Story extends Component {
 
   getStoriesData = () => {
     const id = this.state.id;
-    API.getIgStories(id)
-    .then(res => {
+    getIgStories(id)
+      .then(res => {
         this.setState({
           photos: res.pict_url,
           videos: res.video_url,
           isLoading: false
         });
-    })
-    .catch(() => {
-      this.setState({isError: true})
-    })
-  }
+      })
+      .catch(() => {
+        this.setState({ isError: true });
+      });
+  };
 
   handleSubmit(event) {
     this.setState({ id: this.state.id, isLoading: true });
@@ -53,7 +53,12 @@ class Story extends Component {
     return (
       <Fragment>
         <div className="container mtop content">
-          <Input onSubmit={this.handleSubmit} placeholder="Enter Instagram Username.." id={id} onChange={this.handleChange} />
+          <Input
+            onSubmit={this.handleSubmit}
+            placeholder="Enter Instagram Username.."
+            id={id}
+            onChange={this.handleChange}
+          />
           {isError ? (
             <div className="row mt-5">
               <div className="col">
@@ -65,7 +70,7 @@ class Story extends Component {
           ) : isLoading ? (
             <div
               className="row mt-5"
-              style={{ justifyContent: "center", alignItems: "center" }}
+              style={{ justifyContent: 'center', alignItems: 'center' }}
             >
               <div className="spinner-grow text-primary" role="status">
                 <span className="sr-only">Loading...</span>
