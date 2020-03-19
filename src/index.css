@@ -36,7 +36,8 @@ body {
 }
 
 .bg-white {
-  background-color: rgba(255, 255, 255, 0.95) !important;
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: saturate(180%) blur(20px);
 }
 p,
 li {
