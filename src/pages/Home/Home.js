@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import { getIgPhotos } from '../../services';
+
 import Input from '../../components/Input';
 import Footer from '../../components/Footer';
 import Description from '../../components/Description';
+import { getIgPhotos } from '../../services';
 
 class Home extends Component {
   constructor(props) {
@@ -16,48 +17,46 @@ class Home extends Component {
       isError: false,
       isSingle: false
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
     document.title = 'Instagram Photos Downloader';
   }
 
-  handleChange(event) {
-    this.setState({ id: event.target.value });
+  handleChange = e  => {
+    this.setState({ id: e.target.value });
   }
 
-  getPhotosData = () => {
-    const id = this.state.id;
-    getIgPhotos(id)
-      .then(res => {
-        if ('pict_url' in res) {
-          this.setState({
-            isLoading: false,
-            photos: res.pict_url,
-            isSingle: false
-          });
-        } else {
-          this.setState({
-            isLoading: false,
-            photo: res.first_pict,
-            isSingle: true
-          });
-        }
-      })
-      .catch(() => {
-        this.setState({ isError: true });
-      });
+  getPhotosData = async () => {
+    const { id } = this.state;
+    try {
+      const res = await getIgPhotos(id);
+      if (res.hasOwnProperty('pict_url')) {
+        this.setState({
+          isLoading: false,
+          photos: res.pict_url,
+          isSingle: false
+        });
+      } else {
+        this.setState({
+          isLoading: false,
+          photo: res.first_pict,
+          isSingle: true
+        })
+      }
+    } catch (error) {
+      this.setState({ isError: true })
+    }
   };
 
-  handleSubmit(event) {
-    this.setState({ id: this.state.id, isLoading: true });
+  handleSubmit = e => {
+    const { id } = this.state;
+    this.setState({ id, isLoading: true });
     this.getPhotosData();
-    event.preventDefault();
+    e.preventDefault();
   }
 
-  render() {
+  render() { 
     const { photo, photos, id, isError, isLoading, isSingle } = this.state;
     return (
       <Fragment>

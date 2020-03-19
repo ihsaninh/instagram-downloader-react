@@ -16,41 +16,46 @@ class Video extends Component {
       isError: false,
       isSingle: false
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
     document.title = 'Instagram Videos Downloader';
   }
 
-  handleChange(event) {
-    this.setState({ id: event.target.value });
+  handleChange = e => {
+    this.setState({ id: e.target.value });
   }
 
-  getVideosData = () => {
-    const id = this.state.id;
-    getIgVideos(id).then(res => {
-      if ('video_url' in res) {
+  getVideosData = async () => {
+    const { id } = this.state;
+    try {
+      const res = await getIgVideos(id);
+      if (res.hasOwnProperty('video_url')) {
+        const videos = res.video_url.filter(n => n);
         this.setState({
           isLoading: false,
-          photos: res.video_url,
+          videos,
           isSingle: false
         });
       } else {
         this.setState({
           isLoading: false,
-          photo: res.first_video,
+          video: res.first_video,
           isSingle: true
         });
-      }
-    });
+      };
+    } catch (error) {
+      this.setState({
+        isError: true
+      });
+    };
   };
 
-  handleSubmit(event) {
-    this.setState({ id: this.state.id, isLoading: true });
+  handleSubmit = e => {
+    const { id } = this.state;
+    this.setState({ id, isLoading: true });
     this.getVideosData();
-    event.preventDefault();
+    e.preventDefault();
   }
 
   render() {

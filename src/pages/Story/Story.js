@@ -15,37 +15,36 @@ class Story extends Component {
       isLoading: false,
       isError: false
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
     document.title = 'Instagram Stories Downloader';
   }
 
-  handleChange(event) {
-    this.setState({ id: event.target.value });
+  handleChange = e => {
+    this.setState({ id: e.target.value });
   }
 
-  getStoriesData = () => {
-    const id = this.state.id;
-    getIgStories(id)
-      .then(res => {
-        this.setState({
-          photos: res.pict_url,
-          videos: res.video_url,
-          isLoading: false
-        });
-      })
-      .catch(() => {
-        this.setState({ isError: true });
+  getStoriesData = async () => {
+    const { id } = this.state;
+    try {
+      const res = await getIgStories(id);
+      const videos = res.video_url.filter(n => n);
+      this.setState({
+        photos: res.pict_url,
+        videos,
+        isLoading: false
       });
+    } catch (error) {
+      this.setState({ isError: true });
+    }
   };
 
-  handleSubmit(event) {
-    this.setState({ id: this.state.id, isLoading: true });
+  handleSubmit = e => {
+    const { id } = this.state;
+    this.setState({ id, isLoading: true });
     this.getStoriesData();
-    event.preventDefault();
+    e.preventDefault();
   }
 
   render() {
